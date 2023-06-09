@@ -1,6 +1,6 @@
-const { log } = require("console");
 const Book = require("../models/book");
 const fs = require("fs");
+const sharp = require("sharp");
 
 // ajout d'un nouveau livre
 exports.createBook = (req, res, next) => {
@@ -17,7 +17,6 @@ exports.createBook = (req, res, next) => {
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`,
-    averageRating: bookObject.ratings[0].grade,
   });
   // sauvegarde dans la base de données
   book
@@ -58,7 +57,7 @@ exports.modifyBook = (req, res, next) => {
 };
 
 // suppression d'un livre
-exports.deleteBook = (req, res, next) => {
+exports.deleteBook = (req, res) => {
   // sélection du livre par son id
   Book.findOne({ _id: req.params.id })
     .then((book) => {
@@ -82,60 +81,68 @@ exports.deleteBook = (req, res, next) => {
 };
 
 // renvoie un seul livre séléctionné grâce à son id
-exports.getOneBook = (req, res, next) => {
+exports.getOneBook = (req, res) => {
   Book.findOne({ _id: req.params.id })
     .then((book) => res.status(200).json(book))
     .catch((error) => res.status(404).json({ error }));
 };
 
 // renvoie un tableau de tous les livres
-exports.getAllBooks = (req, res, next) => {
+exports.getAllBooks = (req, res) => {
   Book.find()
     .then((books) => res.status(200).json(books))
     .catch((error) => res.status(400).json({ error }));
 };
 
-// ajout de la note
 exports.ratingBook = (req, res, next) => {
   Book.findOne({ _id: req.params.id })
     .then((book) => {
+      const ratingObject = {
+        userId: req.auth.userId,
+        grade: req.body.rating,
+      };
+
+      const newRatings = [...book.ratings];
+
+      const hasRated = newRatings.some(
+        (rating) => rating.userId === req.auth.userId
+      );
+
       if (req.body.rating >= 0 && req.body.rating <= 5) {
-        const ratingBook = { ...req.body, grade: req.body.rating };
-        const userId = req.auth.userId;
-        console.log("a", ratingBook);
-        // delete ratingBook._id;
-        // on verifie si l'utilisateur à déjà noté le livre
-        const hasRated = book.ratings.some(
-          (rating) => rating.userId === userId
-        );
         if (hasRated) {
           return res
             .status(400)
             .json({ message: "Vous avez déjà noté ce livre" });
         } else {
           // on ajoute la nouvelle note au tableau ratings
-          book.ratings.push({ userId, grade: req.body.rating });
+          newRatings.push(ratingObject);
           //on ajoute la nouvelle note
-          const totalRatings = book.ratings.length;
-          const sumRatings = book.ratings.reduce(
+          const totalRatings = newRatings.length;
+          const sumRatings = newRatings.reduce(
             (acc, rating) => acc + rating.grade,
             0
           );
-          console.log(book.ratings);
-          book.averageRating = sumRatings / totalRatings;
+          const newAverageRating = sumRatings / totalRatings;
 
-          Book.updateOne()
-            .then((e) => {
-              console.log("e", book._id)
-              res.status(200).json({ message: "Note prise en compte" , id: ratingBook._id});
+          Book.updateOne(
+            { _id: req.params.id },
+            {
+              ratings: newRatings,
+              averageRating: newAverageRating,
+              _id: req.params.id,
+            }
+          )
+            .then(() => {
+              res.status(201).json();
             })
-            .catch((error) => res.status(400).json({ error }));
+            .catch((error) => {
+              res.status(400).json({ error });
+            });
+          // res.status(200).json(book);
         }
       }
     })
-    .catch((error) => {
-      res.status(400).json({ error: error.message });
-    });
+    .catch((error) => res.status(500).json({ error }));
 };
 
 // renvoie un tableau des 3 livres les mieux notés
