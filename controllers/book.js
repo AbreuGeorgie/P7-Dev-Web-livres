@@ -1,6 +1,5 @@
 const Book = require("../models/book");
 const fs = require("fs");
-const sharp = require("sharp");
 
 // ajout d'un nouveau livre
 exports.createBook = (req, res, next) => {
@@ -133,12 +132,11 @@ exports.ratingBook = (req, res, next) => {
             }
           )
             .then(() => {
-              res.status(201).json();
+              res.status(200).json(book);
             })
             .catch((error) => {
-              res.status(400).json({ error });
+              res.status(500).json({ error });
             });
-          // res.status(200).json(book);
         }
       }
     })
