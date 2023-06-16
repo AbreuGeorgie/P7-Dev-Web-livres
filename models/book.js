@@ -12,7 +12,7 @@ const bookSchema = mongoose.Schema({
       grade: Number, // - note donnée à un livre
     },
   ], // - notes données à un livre
-  averageRating: Number, // - note moyenne du livre
+  averageRating: { type: Number }, // - note moyenne du livre
   imageUrl: { type: String, required: true }, // - image de couverture du livre
 });
 
