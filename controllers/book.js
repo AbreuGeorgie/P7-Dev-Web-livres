@@ -36,18 +36,18 @@ exports.modifyBook = (req, res, next) => {
   Book.findOne({ _id: req.params.id })// recherche du livre correspondant à l'ID fourni dans la requête req.params.id
     .then((book) => { //si livre trouvé
       if (book.userId != req.auth.userId) { //verifie si ID de l'utilisateur du livre ne correspond pas à l'id de l'utilisateur authentifié
-        res.status(403).json({ message: "Requête non autorisée" });//ne correspond pas
+        res.status(403).json({ message: "403: unauthorized request" });//ne correspond pas
       } else { // correspond 
         Book.updateOne(// met à jour avec les nouvelles données
           { _id: req.params.id },
           { ...bookObject, _id: req.params.id }//créer un nouvel objet en copiant toutes les propriétés de bookObject qui contient les nouvelles données du livre et en ajoutant une propriété _id avec la valeur de req.params.id pour garantir que l'id du livre reste inchangé
         )
-          .then(() => res.status(200).json({ message: "Livre modifié!" })) //succès
-          .catch((error) => res.status(401).json({ error })); //erreur
+          .then(() => res.status(200).json({ message: "Livre modifié" })) //succès
+          .catch((error) => res.status(500).json({ error })); //erreur
       }
     })
     .catch((error) => { //si livre non trouvé
-      res.status(400).json({ error });
+      res.status(404).json({ error });
     });
 };
 
@@ -58,7 +58,7 @@ exports.deleteBook = (req, res) => {
     .then((book) => {//livre trouvé
       
       if (book.userId != req.auth.userId) {// on compare l'id de l'utilisateur du livre à celle de l'utilisateur authentifié
-        res.status(403).json({ message: "Requête non autorisée" }); //si les id sont différentes : interdit
+        res.status(403).json({ message: "403: unauthorized request" }); //si les id sont différentes : interdit
       
       } else { // si les 2 id sont identiques
         const filename = book.imageUrl.split("/images/")[1];
@@ -68,12 +68,12 @@ exports.deleteBook = (req, res) => {
             .then(() => {
               res.status(200).json({ message: "Livre supprimé !" });//succès
             })
-            .catch((error) => res.status(401).json({ error }));//échec
+            .catch((error) => res.status(500).json({ error }));//échec
         });
       }
     })
     .catch((error) => {//livre non trouvé
-      res.status(500).json({ error });
+      res.status(404).json({ error });
     });
 };
 
@@ -91,7 +91,7 @@ exports.getAllBooks = (req, res) => {
 
   Book.find()//reccupère tous les livres de la base de données
     .then((books) => res.status(200).json(books))//livres trouvés, renvoi code 200 avec les livres au format JSON
-    .catch((error) => res.status(400).json({ error }));//livre non trouvé
+    .catch((error) => res.status(404).json({ error }));//livre non trouvé
 };
 
 //ATTRIBUE UNE NOTE A UN LIVRE
@@ -143,7 +143,7 @@ exports.ratingBook = (req, res, next) => {
       }
     })
 
-    .catch((error) => res.status(500).json({ error }));//livre non trouvé
+    .catch((error) => res.status(404).json({ error }));//livre non trouvé
 };
 
 //RECCUPERER LES 3 LIVRES LES MIEUX NOTÉS
@@ -159,6 +159,6 @@ exports.bestRating = (req, res, next) => {
       res.status(200).json(bestRatingBook);//renvoie les meilleurs livres au format JSON
     })
     .catch((error) => {// erreur lors de la reccupération des livres
-      res.status(400).json({ error });
+      res.status(500).json({ error });
     });
 };
