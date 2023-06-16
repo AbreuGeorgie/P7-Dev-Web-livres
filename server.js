@@ -1,4 +1,8 @@
 const express = require('express');
+
+const dotenv = require('dotenv');
+const result = dotenv.config();
+
 const bookRoutes = require('./routes/book');
 const userRoutes = require('./routes/user');
 const path = require('path');
@@ -16,12 +20,13 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect('mongodb+srv://abreugeorgie:pXLrdgfe2JWBv0wq@cluster0.dwsdvsd.mongodb.net/')
+mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.dwsdvsd.mongodb.net/?retryWrites=true&w=majority`)
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'))
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/books', bookRoutes);
+// app.use('/api/bestrating', bestratingRoutes);
 app.use('/api/auth', userRoutes);
 
 app.listen('4000');
