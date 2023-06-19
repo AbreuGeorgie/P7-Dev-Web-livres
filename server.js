@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 });
 
 //CONNEXION AVEC LA BASE DE DONNEES MONGODB
-mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.dwsdvsd.mongodb.net/?retryWrites=true&w=majority`)
+mongoose.connect(process.env.DB_URL)
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'))
 
@@ -29,4 +29,4 @@ app.use('/images', express.static(path.join(__dirname, 'images')));//ce middlewa
 app.use('/api/books', bookRoutes);//routes des livres définies avec /api/books
 app.use('/api/auth', userRoutes);//routes d'authentification des utilisateurs définies avec /api/auth
 
-app.listen('4000');//le serveur écoute sur le port 4000
+app.listen(4000);//le serveur écoute sur le port 4000
