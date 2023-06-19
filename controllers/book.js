@@ -11,14 +11,14 @@ exports.createBook = (req, res, next) => {
   delete bookObject._userId; // Suppression de _userId
 
   const book = new Book({ // Création d'une instance de Book
-    ...bookObject,
+    ...bookObject, 
     userId: req.auth.userId, //id de l'utilisateur authentifié
     imageUrl: `${req.protocol}://${req.get("host")}/${req.file.path}`}); //url du livre
   
   book
     .save()// sauvegarde du livre dans la base de données
     .then(() => res.status(201).json({ book: book }))//réponse json avec le livre créé
-    .catch((error) => res.status(400).json({ error }));//erreur si echec
+    .catch((error) => res.status(500).json({ error }))
 };
 
 // MODIFICATION D'UN LIVRE EXISTANT
@@ -79,7 +79,6 @@ exports.deleteBook = (req, res) => {
 
 //RECCUPERATION D'UN LIVRE PAR SON ID
 exports.getOneBook = (req, res) => {
-
   Book.findOne({ _id: req.params.id }) //recherche le livre correspondant à l'id fourni dans la requête (req.params.id)
 
     .then((book) => res.status(200).json(book)) //livre trouvé, renvoi code 200 avec les détails du livre au format JSON
@@ -140,6 +139,8 @@ exports.ratingBook = (req, res, next) => {
               res.status(500).json({ error });
             });
         }
+      }else{
+        res.status(400)
       }
     })
 
@@ -148,8 +149,16 @@ exports.ratingBook = (req, res, next) => {
 
 //RECCUPERER LES 3 LIVRES LES MIEUX NOTÉS
 exports.bestRating = (req, res, next) => {
+  Book.find().sort({averageRating: -1}).limit(3)
+  .then((books)=>res.status(200).json(books))
+  .catch((error)=>res.status(500).json({ error }));
+};
 
-  Book.find()
+
+
+/* 1ère version que j'avais réalisé pour bestrating mais celle ci-dessus est plus optimisée
+
+Book.find()//ne pas retourner tous les livres, voir requete mongoose 
     .then((books) => {//récupère tous les livres de la base de données
       const bestRatingBook = books
         .sort(//trie les livres en fonction de leur note moyenne avec sort
@@ -160,5 +169,4 @@ exports.bestRating = (req, res, next) => {
     })
     .catch((error) => {// erreur lors de la reccupération des livres
       res.status(500).json({ error });
-    });
-};
+    }); */
