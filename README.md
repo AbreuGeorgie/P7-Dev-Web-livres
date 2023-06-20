@@ -82,7 +82,7 @@ Book {
 ```sh
 git clone https://github.com/AbreuGeorgie/P7-Dev-Web-livres
 ```
-2. __Pour l'évaluateur__ : Modifiez le nom du fichier .env.dist par .env et remplacer les valeurs des clés par celle fournit dans les livrables 
+2. __Pour l'évaluateur__ : Modifiez le nom du fichier .env.dist par .env et remplacer les valeurs de DB_URL et RANDOM_TOKEN_SECRET par celle fournit dans les livrables 
 >Pour une question de sécurité, j'ai préféré ne pas pousser sur GitHub ces informations...
 3. Dans ce même fichier, cloner le frontend du projet :
 ```sh
