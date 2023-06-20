@@ -84,11 +84,11 @@ git clone https://github.com/AbreuGeorgie/P7-Dev-Web-livres
 ```
 2. __Pour l'évaluateur__ : Modifiez le nom du fichier .env.dist par .env et remplacer les valeurs des clés par celle fournit dans les livrables 
 >Pour une question de sécurité, j'ai préféré ne pas pousser sur GitHub ces informations...
-2. Dans ce même fichier, cloner le frontend du projet :
+3. Dans ce même fichier, cloner le frontend du projet :
 ```sh
 git clone https://github.com/OpenClassrooms-Student-Center/P7-Dev-Web-livres.git
 ```
-3. Nous avons maintenant un fichier qui contient le frontend et le backend du projet;
+>Nous avons maintenant un fichier qui contient le frontend et le backend du projet
 4. Installer les dépendances du backend : 
 ```sh
 cd backend
