@@ -44,9 +44,9 @@ le code doit vérifier si le user ID actuel correspond au user ID du livre. Si l
 modifications à celui-ci.
 
 ### Models
-
+```sh
 User {  
-    email : String - adresse e-mail de l’utilisateur [unique]  
+    email : String - adresse e-mail de l’utilisateur (unique)  
     password : String - mot de passe haché de l’utilisateur  
 }
 
@@ -65,6 +65,7 @@ Book {
     ] - notes données à un livre  
     averageRating : Number - note moyenne du livre  
 }
+```
 
 ### Sécurité
 
@@ -153,8 +154,7 @@ npm start
   - [x] si on clique sur "supprimer", un message s'affiche nous demandant la confirmation de la suppression, si on confirme, une page confirmant la suppression s'affiche ainsi qu'un un bouton "Retour à l'accueil";
   - [x] si on clique sur "modifier", la page avec le formulaire de modification doit apparaitre, une fois les champs remplis, lorsqu'on clique sur "Publier", on est redirigé vers la page d'accueil;
 
-- [x] cliquer sur "Se déconnecter";
-- une fois déconnecter : 
+- [x] cliquer sur "Se déconnecter", et une fois déconnecter : 
   - [x] si on clique sur ajouter un livre, on est redirigé vers la page de connexion/inscription;
   - [x] si on clique sur un livre, la page de description du livre s'affiche mais on ne peut plus ajouter de notes;
 
