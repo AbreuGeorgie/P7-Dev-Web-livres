@@ -68,11 +68,11 @@ Book {
 
 ### Sécurité
 
-● Le mot de passe de l'utilisateur doit être haché.
-● L'authentification doit être renforcée sur toutes les routes livre (book) requises.
-● Les adresses électroniques dans la base de données sont uniques, et un plugin Mongoose approprié est utilisé pour garantir leur unicité et signaler les erreurs.
-● La sécurité de la base de données MongoDB (à partir d'un service tel que MongoDB Atlas) ne doit pas empêcher l'application de se lancer sur la machine d'un utilisateur.
-● Les erreurs issues de la base de données doivent être remontées.
+- Le mot de passe de l'utilisateur doit être haché.
+- L'authentification doit être renforcée sur toutes les routes livre (book) requises.
+- Les adresses électroniques dans la base de données sont uniques, et un plugin Mongoose approprié est utilisé pour garantir leur unicité et signaler les erreurs.
+- La sécurité de la base de données MongoDB (à partir d'un service tel que MongoDB Atlas) ne doit pas empêcher l'application de se lancer sur la machine d'un utilisateur.
+- Les erreurs issues de la base de données doivent être remontées.
 
 
 ## Installation :
@@ -111,16 +111,18 @@ npm start
 > Par défaut le serveur s'ouvre sur le port http://localhost:4000 et l'application sur le port http://localhost:3000
 
 ### Utilisateurs créé afin de tester l'application :
-// [
-//     {
-//         "email":"great.finch321@maildrop.cc",
-//         "password":"azerty123"
-//     },
-//     {
-//         "email":"loud.spider953@maildrop.cc",
-//         "password":"azerty123"
-//     },
-// ]
+```sh
+[
+    {
+        "email":"great.finch321@maildrop.cc",
+        "password":"azerty123"
+    },
+    {
+        "email":"loud.spider953@maildrop.cc",
+        "password":"azerty123"
+    },
+]
+```
 
 
 ## Développé avec :
@@ -148,13 +150,13 @@ npm start
 - [x] cliquer sur un des livres, une page descriptive du livre doit s'afficher, ainsi qu'en bas de la page les trois livres les mieux notés;
 - [x] si l'utilisateur n'a pas encore noté ce livre, on doit pouvoir lui attribuer une note, la moyenne des notes du livre doit être recalculée;
 - [x] si l'utilisateur est celui qui a publié le livre, deux bouton s'affiche: "modifier" et "supprimer"; 
- - [x] si on clique sur "supprimer", un message s'affiche nous demandant la confirmation de la suppression, si on confirme, une page confirmant la suppression s'affiche ainsi qu'un un bouton "Retour à l'accueil";
- - [x] si on clique sur "modifier", la page avec le formulaire de modification doit apparaitre, une fois les champs remplis, lorsqu'on clique sur "Publier", on est redirigé vers la page d'accueil;
+  - [x] si on clique sur "supprimer", un message s'affiche nous demandant la confirmation de la suppression, si on confirme, une page confirmant la suppression s'affiche ainsi qu'un un bouton "Retour à l'accueil";
+  - [x] si on clique sur "modifier", la page avec le formulaire de modification doit apparaitre, une fois les champs remplis, lorsqu'on clique sur "Publier", on est redirigé vers la page d'accueil;
 
 - [x] cliquer sur "Se déconnecter";
 - une fois déconnecter : 
- - [x] si on clique sur ajouter un livre, on est redirigé vers la page de connexion/inscription;
- - [x] si on clique sur un livre, la page de description du livre s'affiche mais on ne peut plus ajouter de notes;
+  - [x] si on clique sur ajouter un livre, on est redirigé vers la page de connexion/inscription;
+  - [x] si on clique sur un livre, la page de description du livre s'affiche mais on ne peut plus ajouter de notes;
 
 
 ## Auteur :
