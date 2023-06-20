@@ -115,12 +115,12 @@ npm start
 ```sh
 [
     {
-        "email":"great.finch321@maildrop.cc",
-        "password":"azerty123"
+        "email":"great.finch1@maildrop.cc",
+        "password":"test"
     },
     {
         "email":"loud.spider953@maildrop.cc",
-        "password":"azerty123"
+        "password":"test1"
     },
 ]
 ```
