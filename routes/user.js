@@ -1,9 +1,13 @@
-const express = require('express');//requis pour créer un router
-const router = express.Router();//création du router
+const express = require("express");
+const router = express.Router();
 
-const userCtrl = require('../controllers/user');//contient les fonctions de contrôle pour chaque route
+const userCtrl = require("../controllers/user");
 
-router.post('/signup', userCtrl.signup);//route pour inscription
-router.post('/login', userCtrl.login);//route pour connexion
+//MIDDLEWARE
+const passwordValidator = require("../middleware/passwordValidator");
 
-module.exports = router;//routes exportées vers d'autres parties de l'application
+//ROUTES
+router.post("/signup", passwordValidator, userCtrl.signup);
+router.post("/login", userCtrl.login);
+
+module.exports = router;
