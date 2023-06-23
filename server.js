@@ -1,32 +1,41 @@
-const express = require('express'); //requis pour créer l'application express
+const express = require("express");
 
-const dotenv = require('dotenv'); //pour charger les variables d'environnement à partir du fichier .env
+const dotenv = require("dotenv");
 const result = dotenv.config();
 
-const bookRoutes = require('./routes/book');//import des routes des livres
-const userRoutes = require('./routes/user');//import des routes des utilisateurs
-const path = require('path');//permet de gérer les chemins des fichiers
+const bookRoutes = require("./routes/book");
+const userRoutes = require("./routes/user");
+const path = require("path");
 
-const mongoose = require('mongoose');//permet d'établir une connexion à la base de données MongoDB
+const mongoose = require("mongoose");
 
-const app = express();//instance de l'appli créée avec express
+const app = express();
 
-app.use(express.json());//middleware utilisé pour analyser les données JSON des requêtes
+//MIDDLEWARE UTILISÉ POUR ANALYSER LES DONNÉES JSON DES REQUETES
+app.use(express.json());
 
+//MIDDLEWARE QUI GÈRE LES AUTORISATION D'ACCÈS, LES EN-TETES SPECIFIES ET LES DIFFÉRENTES METHODES
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');//le middleware est configuré pour permettre l'accès à l'API depuis toutes les origines.
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');//le middleware est configuré pour autoriser les en-têtes spécifiés
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');//le middleware est configuré pour autoriser les méthodes HTTP spécifiées
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
   next();
 });
 
 //CONNEXION AVEC LA BASE DE DONNEES MONGODB
-mongoose.connect(process.env.DB_URL)
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'))
+mongoose
+  .connect(process.env.DB_URL)
+  .then(() => console.log("Connexion à MongoDB réussie !"))
+  .catch(() => console.log("Connexion à MongoDB échouée !"));
 
-app.use('/images', express.static(path.join(__dirname, 'images')));//ce middleware est utilisé pour servir les fichiers images à partir du répertoire "images"
-app.use('/api/books', bookRoutes);//routes des livres définies avec /api/books
-app.use('/api/auth', userRoutes);//routes d'authentification des utilisateurs définies avec /api/auth
+//ROUTES
+app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/api/auth", userRoutes);
 
-app.listen(4000);//le serveur écoute sur le port 4000
+app.listen(4000);

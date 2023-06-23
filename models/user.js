@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");//utilisé pour vérifier que l'email est bien unique dans la base de données
+const uniqueValidator = require("mongoose-unique-validator");
 
+//SCHEMA DES UTILISATEURS
 const userSchema = mongoose.Schema({
-  email: { type: String, required: true, unique: true },//email de l'utilisateur , email unique
-  password: { type: String, required: true },//mot de passe de l'utilisateur
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
 });
 
 userSchema.plugin(uniqueValidator);
